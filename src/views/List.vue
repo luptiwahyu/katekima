@@ -46,11 +46,19 @@
         </TableBody>
       </Table>
 
-      <div class="grid grid-cols-2 mt-5">
+      <div class="grid grid-cols-3 mt-5">
         <div class="col-span-1">
           <Button class="bg-indigo-900 hover:bg-indigo-700" @click="add()">
             <Plus /> Add New
           </Button>
+        </div>
+        <div class="col-span-1 content-center justify-self-center">
+          <span>
+            Page
+            <strong>{{ list.pageNumber }}</strong>
+            of
+            <strong>{{ list.pageTotal }}</strong>
+          </span>
         </div>
         <div class="col-span-1 justify-self-end">
           <Pagination :items-per-page="10" :total="list.count">
