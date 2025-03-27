@@ -2,7 +2,12 @@
   <main>
     <div class="text-2xl pb-4">{{ title }}</div>
 
-    <div class="w-1/2 space-y-6">
+    <div v-if="loadingDetail" class="space-y-[10px]">
+      <Skeleton class="h-[18px] w-[40px]" />
+      <Skeleton class="h-[34px] w-1/2" />
+    </div>
+
+    <div v-if="!loadingDetail" class="w-1/2 space-y-6">
       <div class="space-y-1">
         <label class="font-medium text-sm">Name</label>
         <Input type="text" v-model="form.title" />
@@ -27,9 +32,10 @@ import { Send, ChevronLeft, Loader2 } from 'lucide-vue-next'
 import { Button } from '@/components/ui/button'
 import { useRouter, useRoute } from 'vue-router'
 import { Input } from '@/components/ui/input'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useBerryStore } from '@/stores/berry'
 import { notify } from 'notiwind'
+import { Skeleton } from '@/components/ui/skeleton'
 
 const router = useRouter()
 const route = useRoute()
@@ -63,12 +69,21 @@ if (formType === 'edit') {
     })
 }
 
-function onSave(data: object) {
+const loadingDetail = computed(() => {
+  return berry.detail.loading
+})
+
+interface Berry {
+  id: number,
+  title: string,
+}
+
+function onSave(data: Berry) {
   if (formType === 'create') onCreate(data)
   else if (formType === 'edit') onUpdate(data)
 }
 
-function onCreate(data: object) {
+function onCreate(data: Berry) {
   loading.value = true
   berry.create(data)
     .then((response) => {
@@ -87,7 +102,7 @@ function onCreate(data: object) {
 
 }
 
-function onUpdate(data: object) {
+function onUpdate(data: Berry) {
   loading.value = true
   berry.update(data)
     .then((response) => {

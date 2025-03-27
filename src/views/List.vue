@@ -94,18 +94,17 @@ import { useBerryStore } from '@/stores/berry'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Plus } from 'lucide-vue-next'
 import { notify } from 'notiwind'
-import { Input } from '@/components/ui/input'
-import { ref } from 'vue'
-// import { debounce } from 'lodash'
-import debounce from 'lodash.debounce'
+// import { Input } from '@/components/ui/input'
+// import { ref } from 'vue'
+// import debounce from 'lodash.debounce'
 
 const router = useRouter()
 
-function viewDetail(name) {
+function viewDetail(name: string) {
   router.push({ name: 'berry-detail', params: { id: name } })
 }
 
-function edit(name) {
+function edit(name: string) {
   router.push({ name: 'berry-edit', params: { id: name } })
 }
 
@@ -126,7 +125,7 @@ function next() {
   berry.getList()
 }
 
-function sequence(index) {
+function sequence(index: number) {
   return index + (list.pageLimit * list.pageNumber - list.pageLimit + 1)
 }
 

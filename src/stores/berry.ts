@@ -29,12 +29,15 @@ export const useBerryStore = defineStore('berry', {
       const url = `https://pokeapi.co/api/v2/berry?limit=${this.list.pageLimit}&offset=${this.list.pageOffset}`
       const response = await (await fetch(url)).json()
 
-      console.log('response: ', response)
-
       this.list.data = response.results
       this.list.count = response.count
       this.list.pageTotal = Math.ceil(this.list.count / this.list.pageLimit)
 
+      /**
+       * setTimeout ini hanya bertujuan
+       * untuk menunjukan loading
+       * karena responsenya terlalu cepat
+       */
       setTimeout(() => {
         this.list.loading = false
       }, 300)
@@ -46,7 +49,6 @@ export const useBerryStore = defineStore('berry', {
         fetch(url)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data)
             this.detail.data = data
             resolve(this.detail.data)
           })
@@ -55,7 +57,7 @@ export const useBerryStore = defineStore('berry', {
           })
           .finally(() => {
             /**
-             * timeout ini hanya bertujuan
+             * setTimeout ini hanya bertujuan
              * untuk menunjukan loading
              * karena responsenya terlalu cepat
              */
@@ -81,7 +83,6 @@ export const useBerryStore = defineStore('berry', {
       })
     },
     delete(id: number) {
-      console.log('id delete: ', id)
       return fetch(`https://fakestoreapi.com/products/${id}`, {
         method: 'DELETE',
       })

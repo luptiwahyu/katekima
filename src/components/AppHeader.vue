@@ -13,17 +13,17 @@
             <DropdownMenu>
               <DropdownMenuTrigger>
                 <Button variant="ghost" class="text-white hover:bg-indigo-700 hover:text-white">
-                  <img :src="activeFlag()" alt="flag-id" class="w-4 mr-2">
+                  <img :src="activeFlag" alt="flag-id" class="w-4 mr-2">
                   {{ activeLang === 'id' ? 'Indonesia' : 'English (US)' }}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem @click="onSelectLang('id')">
-                  <img src="/src/assets/images/flag-id.png" alt="flag-id" class="w-4 mr-2">
+                  <img :src="flagID" alt="flag-id" class="w-4 mr-2">
                   Indonesia
                 </DropdownMenuItem>
                 <DropdownMenuItem @click="onSelectLang('us')">
-                  <img src="/src/assets/images/flag-us.png" alt="flag-us" class="w-4 mr-2">
+                  <img :src="flagUS" alt="flag-us" class="w-4 mr-2">
                   English (US)
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -62,7 +62,9 @@ import {
 
 import { Button } from '@/components/ui/button'
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import flagID from '@/assets/images/flag-id.png'
+import flagUS from '@/assets/images/flag-us.png'
 
 const activeLang = ref('us')
 
@@ -70,7 +72,7 @@ function onSelectLang(lang: string) {
   activeLang.value = lang
 }
 
-function activeFlag() {
-  return activeLang.value === 'id' ? '/src/assets/images/flag-id.png' : '/src/assets/images/flag-us.png'
-}
+const activeFlag = computed(() => {
+  return activeLang.value === 'id' ? flagID : flagUS
+})
 </script>
