@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-indigo-900 sticky top-0">
+  <nav class="bg-indigo-900 sticky top-0 z-50">
     <div class="mx-auto px-6">
       <div class="relative flex h-16 items-center justify-between">
         <div class="flex flex-1 items-center justify-start">

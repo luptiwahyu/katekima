@@ -9,6 +9,15 @@
       <Skeleton class="h-[36px] w-[115px] mt-7" />
     </div>
 
+    <!-- <div class="grid grid-cols-2 mb-4">
+      <div class="col-span-1">
+        <Input type="text" placeholder="Search" class="w-[200px]" v-model="keyword" @input="onSearch" />
+      </div>
+      <div class="col-span-1 justify-items-end">
+        <Input type="text" class="w-[200px]" />
+      </div>
+    </div> -->
+
     <div v-if="!list.loading">
       <Table>
         <TableHeader>
@@ -28,7 +37,10 @@
               <Button variant="link" class="text-xs h-0" @click="viewDetail(item.name)">
                 View
               </Button>
-              <Button variant="link" class="text-xs h-0">Edit</Button>
+              <Button variant="link" class="text-xs h-0" @click="edit(item.name)">Edit</Button>
+              <Button variant="link" class="text-xs h-0 text-red-500" @click="remove(sequence(itemIdx), item.name)">
+                Delete
+              </Button>
             </TableCell>
           </TableRow>
         </TableBody>
@@ -81,11 +93,20 @@ import { useRouter } from 'vue-router'
 import { useBerryStore } from '@/stores/berry'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Plus } from 'lucide-vue-next'
+import { notify } from 'notiwind'
+import { Input } from '@/components/ui/input'
+import { ref } from 'vue'
+// import { debounce } from 'lodash'
+import debounce from 'lodash.debounce'
 
 const router = useRouter()
 
 function viewDetail(name) {
   router.push({ name: 'berry-detail', params: { id: name } })
+}
+
+function edit(name) {
+  router.push({ name: 'berry-edit', params: { id: name } })
 }
 
 const berry = useBerryStore()
@@ -112,4 +133,47 @@ function sequence(index) {
 function add() {
   router.push({ name: 'berry-create' })
 }
+
+function remove(id: number, name: string) {
+  berry.delete(id).then((response) => {
+    if (response.status === 200) {
+      const idx = list.data.findIndex((i) => i.name === name)
+      if (idx >= 0) list.data.splice(idx, 1)
+      alertSuccess()
+    } else {
+      alertError()
+    }
+  })
+}
+
+function alertError() {
+  notify(
+    {
+      group: 'error',
+      title: 'Uh oh! Something went wrong.',
+      text: 'There was a problem with your request.',
+    },
+    3000,
+  )
+}
+
+function alertSuccess() {
+  notify(
+    {
+      group: 'success',
+      title: 'Success',
+      text: 'Your berry was deleted',
+    },
+    3000,
+  )
+}
+
+/*
+const keyword = ref('')
+const onSearch = debounce(function () {
+  if (keyword.value.length > 3) {
+    console.log('keyword: ', keyword.value)
+  }
+}, 700)
+*/
 </script>

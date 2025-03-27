@@ -23,6 +23,11 @@ const router = createRouter({
       name: 'berry-create',
       component: () => import('../views/Form.vue'),
     },
+    {
+      path: '/berry/edit/:id',
+      name: 'berry-edit',
+      component: () => import('../views/Form.vue'),
+    },
   ],
 })
 

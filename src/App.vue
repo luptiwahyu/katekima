@@ -5,6 +5,7 @@
       <AppHeader />
       <div class="p-8">
         <RouterView />
+        <Notification />
       </div>
       <AppFooter />
     </main>
@@ -17,4 +18,5 @@ import { SidebarProvider } from '@/components/ui/sidebar';
 import AppSidebar from './components/AppSidebar.vue'
 import AppHeader from './components/AppHeader.vue'
 import AppFooter from './components/AppFooter.vue'
+import Notification from './components/Notification.vue'
 </script>

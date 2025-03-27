@@ -16,6 +16,10 @@ export const useBerryStore = defineStore('berry', {
         loading: true,
         data: {},
       },
+      form: {
+        id: '',
+        title: '',
+      },
     }
   },
   actions: {
@@ -35,19 +39,52 @@ export const useBerryStore = defineStore('berry', {
         this.list.loading = false
       }, 300)
     },
-    async getDetail(name: string) {
-      this.detail.loading = true
-      const url = `https://pokeapi.co/api/v2/berry/${name}`
-      const response = await (await fetch(url)).json()
-
-      console.log('response: ', response)
-
-      this.detail.data = response
-      console.log('this.detail.data: ', this.detail.data)
-
-      setTimeout(() => {
-        this.detail.loading = false
-      }, 300)
+    getDetail(name: string) {
+      return new Promise((resolve, reject) => {
+        this.detail.loading = true
+        const url = `https://pokeapi.co/api/v2/berry/${name}`
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data)
+            this.detail.data = data
+            resolve(this.detail.data)
+          })
+          .catch((error) => {
+            reject(error)
+          })
+          .finally(() => {
+            /**
+             * timeout ini hanya bertujuan
+             * untuk menunjukan loading
+             * karena responsenya terlalu cepat
+             */
+            setTimeout(() => {
+              this.detail.loading = false
+            }, 300)
+          })
+      })
+    },
+    create(form: object) {
+      return fetch('https://fakestoreapi.com/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+    },
+    update(form: { id: number; title: string }) {
+      const data = { title: form.title }
+      return fetch(`https://fakestoreapi.com/products/${form.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+    },
+    delete(id: number) {
+      console.log('id delete: ', id)
+      return fetch(`https://fakestoreapi.com/products/${id}`, {
+        method: 'DELETE',
+      })
     },
   },
 })
