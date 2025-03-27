@@ -6,7 +6,7 @@ import tailwind from 'tailwindcss'
 
 export default defineConfig({
   plugins: [vue()],
-  base: '/katekima',
+  base: './',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
