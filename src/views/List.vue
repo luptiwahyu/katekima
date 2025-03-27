@@ -3,22 +3,22 @@
     <div class="text-2xl pb-4">List</div>
 
     <div v-if="list.loading">
+      <Skeleton class="h-[34px] w-[152px] mb-[16px]" />
       <div class="space-y-[7px]">
         <Skeleton class="h-[30px] w-full" v-for="i in 11" :key="i" />
       </div>
       <Skeleton class="h-[36px] w-[115px] mt-7" />
     </div>
 
-    <!-- <div class="grid grid-cols-2 mb-4">
-      <div class="col-span-1">
-        <Input type="text" placeholder="Search" class="w-[200px]" v-model="keyword" @input="onSearch" />
-      </div>
-      <div class="col-span-1 justify-items-end">
-        <Input type="text" class="w-[200px]" />
-      </div>
-    </div> -->
-
     <div v-if="!list.loading">
+      <div class="pb-4">
+        <select
+          class="h-[34px] w-[150px] bg-slate-50 rounded border-r-8 border-transparent px-4 text-sm outline outline-gray-200"
+          @change="onChangePageSize" v-model="filterPageLimit">
+          <option v-for="opt in pageEntries" :key="opt.value" :value="opt.value">{{ opt.name }}</option>
+        </select>
+      </div>
+
       <Table>
         <TableHeader>
           <TableRow>
@@ -94,9 +94,7 @@ import { useBerryStore } from '@/stores/berry'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Plus } from 'lucide-vue-next'
 import { notify } from 'notiwind'
-// import { Input } from '@/components/ui/input'
-// import { ref } from 'vue'
-// import debounce from 'lodash.debounce'
+import { computed } from 'vue'
 
 const router = useRouter()
 
@@ -115,13 +113,13 @@ const list = berry.list
 
 function prev() {
   list.pageNumber--
-  list.pageOffset -= 10
+  list.pageOffset -= list.pageLimit
   berry.getList()
 }
 
 function next() {
   list.pageNumber++
-  list.pageOffset += 10
+  list.pageOffset += list.pageLimit
   berry.getList()
 }
 
@@ -167,12 +165,24 @@ function alertSuccess() {
   )
 }
 
-/*
-const keyword = ref('')
-const onSearch = debounce(function () {
-  if (keyword.value.length > 3) {
-    console.log('keyword: ', keyword.value)
+const pageEntries = [
+  { value: 10, name: '10 Entries' },
+  { value: 20, name: '20 Entries' },
+  { value: 30, name: '30 Entries' },
+]
+
+const filterPageLimit = computed({
+  get() {
+    return list.pageLimit
+  },
+  set(newValue) {
+    list.pageLimit = newValue
   }
-}, 700)
-*/
+})
+
+function onChangePageSize() {
+  list.pageNumber = 1
+  list.pageOffset = 0
+  berry.getList()
+}
 </script>

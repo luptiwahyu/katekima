@@ -3,7 +3,7 @@
     <AppSidebar />
     <main class="w-full">
       <AppHeader />
-      <div class="p-8">
+      <div class="p-8 min-h-[80vh]">
         <RouterView />
         <Notification />
       </div>

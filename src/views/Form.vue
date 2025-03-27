@@ -2,12 +2,12 @@
   <main>
     <div class="text-2xl pb-4">{{ title }}</div>
 
-    <div v-if="loadingDetail" class="space-y-[10px]">
+    <div v-if="loadingDetail && formType === 'edit'" class="space-y-[10px]">
       <Skeleton class="h-[18px] w-[40px]" />
       <Skeleton class="h-[34px] w-1/2" />
     </div>
 
-    <div v-if="!loadingDetail" class="w-1/2 space-y-6">
+    <div v-if="(!loadingDetail && formType === 'edit') || formType === 'create'" class="w-1/2 space-y-6">
       <div class="space-y-1">
         <label class="font-medium text-sm">Name</label>
         <Input type="text" v-model="form.title" />
