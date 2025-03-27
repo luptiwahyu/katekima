@@ -52,7 +52,7 @@
             <Plus /> Add New
           </Button>
         </div>
-        <div class="col-span-1 justify-items-end">
+        <div class="col-span-1 justify-self-end">
           <Pagination :items-per-page="10" :total="list.count">
             <PaginationList class="flex items-center gap-1">
               <PaginationPrev :disabled="list.pageNumber <= 1" @click="prev()"
